@@ -34,11 +34,9 @@ class HeadHunterAPI(AbstractAPI):
 
         response = self.__session.get(self.BASE_URL, params=params)
 
-        if response.status_code == 200:
-            vacancies_data = response.json()
-            return vacancies_data.get('items', [])
-        else:
-            raise RuntimeError(f"Ошибка при получении вакансий: {response.status_code}")
+        vacancies_data = response.json()
+        return vacancies_data.get('items', [])
+
 
 
 if __name__ == "__main__":
