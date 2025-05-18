@@ -1,3 +1,6 @@
+from src.hh_api import HeadHunterAPI
+
+
 # Создание экземпляра класса для работы с API сайтов с вакансиями
 hh_api = HeadHunterAPI()
 
