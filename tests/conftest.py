@@ -11,6 +11,13 @@ def hh_api():
 
 
 @pytest.fixture
-def vacancy_instance():
-    """Фикстура для создания экземпляра Vacancy с предустановленными значениями."""
-    return Vacancy("Разработчик Python", "https://example.com/vacancy1", 120000, "Требуется опыт работы с Python.")
+def vacancy_instance_1():
+    """Фикстура для создания экземпляра Vacancy"""
+    return Vacancy("Разработчик Python", "https://example.com/vacancy1", "120000 - 180000руб", "Требуется опыт работы с Python.")
+
+@pytest.fixture
+def vacancy_instance_2():
+    """Фикстура для создания экземпляра Vacancy"""
+    return Vacancy("Разработчик Java", "https://example.com/vacancy2", 100000)
+
+
