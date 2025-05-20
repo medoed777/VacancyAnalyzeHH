@@ -1,20 +1,21 @@
 import re
+from typing import Optional, Any
 
 
 class Vacancy:
     __slots__ = ('name', 'link', 'salary', 'description')
 
-    def __init__(self, name: str, link: str, salary: float | str = None, description: str = None):
+    def __init__(self, name: str, link: str, salary: Optional[float | str] = None, description: Optional[str | None] = None) -> None:
         self.name = name
         self.link = link
         self.salary = self._validate_salary(salary)
         self.description = description
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Vacancy(name={self.name}, link={self.link}, salary={self.salary}, description={self.description})"
 
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}, {self.link}, {self.salary}, {self.description}"
 
     @staticmethod
@@ -37,15 +38,15 @@ class Vacancy:
         return float(salary)
 
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> Any:
         """Метод для операции сравнения (меньше)"""
         return self.salary < other.salary
 
-    def __gt__(self, other):
+    def __gt__(self, other) -> None:
         """Метод для операции сравнения (больше)"""
         return self.salary > other.salary
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> None:
         """Сравнение по зарплате (равно)"""
         return self.salary == other.salary
 
@@ -57,4 +58,3 @@ if __name__ == "__main__":
 
     print(vacancy1)
     print(vacancy2)
-

@@ -1,5 +1,6 @@
 from src.hh_api import HeadHunterAPI
 from src.vacancy import Vacancy
+from src.jsonsaver import JSONSaver
 
 
 # Создание экземпляра класса для работы с API сайтов с вакансиями

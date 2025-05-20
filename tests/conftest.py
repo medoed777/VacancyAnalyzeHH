@@ -17,7 +17,7 @@ def vacancy_instance_1():
 
 @pytest.fixture
 def vacancy_instance_2():
-    """Фикстура для создания экземпляра Vacancy"""
+    """Фикстура для создания второго экземпляра Vacancy"""
     return Vacancy("Разработчик Java", "https://example.com/vacancy2", 100000)
 
 

@@ -7,11 +7,11 @@ class HeadHunterAPI(AbstractAPI):
 
     BASE_URL = 'https://api.hh.ru/vacancies'
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.__session: None = None
         self.__is_connected: bool = False
 
-    def _connect(self):
+    def _connect(self) -> None:
         """Приватный метод подключения к API hh.ru."""
         self.__session = requests.Session()
         response = self.__session.get(self.BASE_URL)
@@ -21,7 +21,7 @@ class HeadHunterAPI(AbstractAPI):
         else:
             raise ConnectionError(f"Ошибка при подключении к API: {response.status_code}")
 
-    def get_vacancies(self, keyword: str, per_page: int = 10, country: int = 113):
+    def get_vacancies(self, keyword: str, per_page: int = 10, country: int = 113) -> list:
         """Получение списка вакансий по запросу."""
         if not self.__is_connected:
             self._connect()
