@@ -1,6 +1,7 @@
 import pytest
 from src.hh_api import HeadHunterAPI
 from src.vacancy import Vacancy
+from src.jsonsaver import JSONSaver
 
 
 @pytest.fixture
@@ -19,5 +20,11 @@ def vacancy_instance_1():
 def vacancy_instance_2():
     """Фикстура для создания второго экземпляра Vacancy"""
     return Vacancy("Разработчик Java", "https://example.com/vacancy2", 100000)
+
+
+@pytest.fixture
+def json_saver():
+    """Фикстура JSONSaver для тестирования"""
+    return JSONSaver(filename="data/test_vacancies.json")
 
 
