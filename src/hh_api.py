@@ -8,8 +8,8 @@ class HeadHunterAPI(AbstractAPI):
     BASE_URL = 'https://api.hh.ru/vacancies'
 
     def __init__(self) -> None:
-        self.__session: None = None
-        self.__is_connected: bool = False
+        self.__session = None
+        self.__is_connected = False
 
     def _connect(self) -> None:
         """Приватный метод подключения к API hh.ru."""
@@ -34,20 +34,8 @@ class HeadHunterAPI(AbstractAPI):
 
         response = self.__session.get(self.BASE_URL, params=params)
 
-        vacancies_data = response.json()
-        return vacancies_data.get('items', [])
-
-
-
-if __name__ == "__main__":
-    hh_api = HeadHunterAPI()
-
-    try:
-        search_query = input("Введите поисковый запрос: ")
-        vacancies = hh_api.get_vacancies(search_query)
-
-        print(f"Найдено вакансий: {len(vacancies)}")
-        for item in vacancies:
-            print(f"Название: {item['name']}, Ссылка: {item['alternate_url']}")
-    except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        if response.status_code == 200:
+            vacancies_data = response.json()
+            return vacancies_data.get('items', [])
+        else:
+            raise Exception(f"Ошибка при получении вакансий: {response.status_code}")

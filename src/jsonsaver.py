@@ -1,10 +1,10 @@
 from src.abstract_class import AbstractJSON
 import json
-
+from src.vacancy import Vacancy
 
 class JSONSaver(AbstractJSON):
     """Класс для работы с json"""
-    def __init__(self, filename="../data/vacancies.json"):
+    def __init__(self, filename="C:/Users/ADM/PycharmProjects/cousrework_2/data/vacancies.json"):
         super().__init__(filename)
         self.vacancies = []
         self._load_vacancies()
@@ -12,7 +12,7 @@ class JSONSaver(AbstractJSON):
     def _load_vacancies(self):
         """Загружает вакансии из файла"""
         try:
-            with open(self.filename, 'r', encoding='utf-8') as file:
+            with open(self._AbstractJSON__filename, 'r', encoding='utf-8') as file:
                 data = json.load(file)
 
                 if isinstance(data, dict) and 'items' in data:
@@ -31,24 +31,27 @@ class JSONSaver(AbstractJSON):
 
     def _save_vacancies(self):
         """Сохраняет вакансии в файл."""
-        with open(self.filename, 'w', encoding='utf-8') as file:
+        with open(self._AbstractJSON__filename, 'w', encoding='utf-8') as file:
             json.dump(self.vacancies, file, indent=4, ensure_ascii=False)
 
     def add_vacancy(self, vacancy):
         """Метод для добавления вакансии в json"""
 
-        if isinstance(vacancy, dict) and 'id' in vacancy:
-            if all(isinstance(v, dict) for v in self.vacancies):
-                if not any(v['id'] == vacancy['id'] for v in self.vacancies):
-                    self.vacancies.append(vacancy)
-                    self._save_vacancies()
-                    return vacancy
-                else:
-                    return "Вакансия с таким id уже существует"
+        if isinstance(vacancy, Vacancy):
+            vacancy_dict = vacancy.to_dict()
+            if 'id' not in vacancy_dict:
+                max_id = max((v['id'] for v in self.vacancies if 'id' in v), default=0)
+                vacancy_dict['id'] = max_id + 1
+
+            if not any(v['id'] == vacancy_dict['id'] for v in self.vacancies):
+                self.vacancies.append(vacancy_dict)
+                self._save_vacancies()
+                return vacancy_dict
             else:
-                return "Ошибка: данные в vacancies имеют некорректный формат"
+                return "Вакансия с таким id уже существует"
         else:
             return "Некорректный формат вакансии"
+
 
     def get_vacancy(self, **criteria):
         """Метод для получения вакансии по указанным критериям"""
@@ -64,14 +67,11 @@ class JSONSaver(AbstractJSON):
 
     def delete_vacancy(self, vacancy_id):
         """Метод для удаления вакансии по id"""
+        initial_count = len(self.vacancies)
         self.vacancies = [vac for vac in self.vacancies if vac.get('id') != vacancy_id]
         self._save_vacancies()
 
-
-if __name__ == "__main__":
-    storage = JSONSaver()
-    print(storage.add_vacancy({'id': 1, 'title': 'Python Developer', 'company': 'OpenAI'}))
-    print(storage.add_vacancy({'id': 2, 'title': 'Data Scientist', 'company': 'Google'}))
-    print(storage.get_vacancy(title='Python Developer'))
-    storage.delete_vacancy(1)
-    print(storage.get_vacancy())
+        if len(self.vacancies) < initial_count:
+            return "Вакансия успешно удалена."
+        else:
+            return "Вакансия с указанным id не найдена."

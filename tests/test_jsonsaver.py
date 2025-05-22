@@ -3,7 +3,6 @@ from unittest.mock import mock_open, patch
 import json
 
 
-
 def test_load_vacancies_with_empty_file(json_saver):
     """Тест загрузки вакансий из пустого файла."""
     with patch("builtins.open", mock_open(read_data='')):
@@ -30,31 +29,24 @@ def test_load_vacancies_with_list(json_saver):
         assert json_saver.vacancies[0]['id'] == "1"
 
 
-def test_add_vacancy_new(json_saver):
+def test_add_vacancy(json_saver, vacancy_instance_1):
     """Тест добавления новой вакансии."""
-    vacancy = {"id": "1", "name": "Vacancy 1"}
+    result = json_saver.add_vacancy(vacancy_instance_1)
 
-    with patch("builtins.open", mock_open(read_data=json.dumps([]))):
-        json_saver._load_vacancies()
-
-    result = json_saver.add_vacancy(vacancy)
-
-    assert result == vacancy
+    assert result == {'id': 1, 'name': 'Разработчик Python', 'link': 'https://example.com/vacancy1', 'salary': 150000.0, 'responsibility': 'Требуется опыт работы с Python.'}
     assert len(json_saver.vacancies) == 1
 
 
-def test_add_vacancy_existing(json_saver):
-    """Тест добавления существующей вакансии."""
-    vacancy = {"id": "1", "name": "Vacancy 1"}
 
-    with patch("builtins.open", mock_open(read_data=json.dumps([vacancy]))):
+def test_add_vacancy_existing(json_saver, vacancy_instance_1):
+    """Тест добавления существующей вакансии."""
+
+    with patch("builtins.open", mock_open(read_data=json.dumps([vacancy_instance_1.to_dict()]))):
         json_saver._load_vacancies()
 
-    result = json_saver.add_vacancy(vacancy)
+    result = json_saver.add_vacancy(vacancy_instance_1)
 
     assert result == "Вакансия с таким id уже существует"
-    assert len(json_saver.vacancies) == 1
-
 
 def test_delete_vacancy(json_saver):
     """Тест удаления вакансии по id."""

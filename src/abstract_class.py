@@ -9,7 +9,7 @@ class AbstractAPI(ABC):
         pass
 
     @abstractmethod
-    def get_vacancies(self, query: str, per_page: int = 10) -> list:
+    def get_vacancies(self, keyword: str, per_page: int = 10) -> list:
         """Получение списка вакансий по запросу."""
         pass
 
@@ -17,8 +17,8 @@ class AbstractAPI(ABC):
 
 class AbstractJSON(ABC):
     """Абстрактный класс для работы с json"""
-    def __init__(self, filename="../data/vacancies.json"):
-        self.filename = filename
+    def __init__(self, filename="C:/Users/ADM/PycharmProjects/cousrework_2/data/vacancies.json"):
+        self.__filename = filename
 
     @abstractmethod
     def add_vacancy(self, vacancy):
