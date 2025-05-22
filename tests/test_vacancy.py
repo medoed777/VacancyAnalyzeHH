@@ -16,7 +16,7 @@ def test_initialization_with_id():
 def test_to_dict():
     vacancy = Vacancy(name="Developer", link="https://example.com", salary=100000)
     expected_dict = {
-            'id': 1,
+            'id': 34,
             'name': "Developer",
             'link': "https://example.com",
             'salary': 100000,

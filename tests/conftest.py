@@ -24,6 +24,15 @@ def vacancy_instance_2():
     return Vacancy("Разработчик Java", "https://example.com/vacancy2", 100000,)
 
 
+@pytest.fixture
+def vacancies():
+    return [
+        Vacancy("Junior Developer", "https://example.com/vacancy1", 50000),
+        Vacancy("Senior Developer", "https://example.com/vacancy2", 100000),
+        Vacancy("Middle Developer", "https://example.com/vacancy3", 75000),
+        Vacancy("Data Scientist", "https://example.com/vacancy4", 120000),
+        Vacancy("DevOps Engineer", "https://example.com/vacancy5", 90000)
+    ]
 
 @pytest.fixture
 def json_saver():
