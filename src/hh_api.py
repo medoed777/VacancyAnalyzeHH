@@ -1,11 +1,12 @@
 import requests
+
 from src.abstract_class import AbstractAPI
 
 
 class HeadHunterAPI(AbstractAPI):
     """Класс для подключения к API"""
 
-    BASE_URL = 'https://api.hh.ru/vacancies'
+    BASE_URL = "https://api.hh.ru/vacancies"
 
     def __init__(self) -> None:
         self.__session = None
@@ -26,16 +27,12 @@ class HeadHunterAPI(AbstractAPI):
         if not self.__is_connected:
             self._connect()
 
-        params = {
-            'text': keyword,
-            'per_page': per_page,
-            'area': country
-        }
+        params = {"text": keyword, "per_page": per_page, "area": country}
 
         response = self.__session.get(self.BASE_URL, params=params)
 
         if response.status_code == 200:
             vacancies_data = response.json()
-            return vacancies_data.get('items', [])
+            return vacancies_data.get("items", [])
         else:
             raise Exception(f"Ошибка при получении вакансий: {response.status_code}")

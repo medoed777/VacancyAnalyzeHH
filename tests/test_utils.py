@@ -1,5 +1,6 @@
 import pytest
-from src.utils import filter_vacancies, get_vacancies_by_salary, sort_vacancies, get_top_vacancies, print_vacancies
+
+from src.utils import filter_vacancies, get_top_vacancies, get_vacancies_by_salary, print_vacancies, sort_vacancies
 from src.vacancy import Vacancy
 
 
@@ -10,6 +11,7 @@ def test_filter_vacancies(vacancies):
 
     filtered = filter_vacancies(vacancies, [])
     assert len(filtered) == len(vacancies)
+
 
 def test_get_vacancies_by_salary(vacancies):
     filtered = get_vacancies_by_salary(vacancies, "60000-100000")
@@ -22,21 +24,23 @@ def test_get_vacancies_by_salary(vacancies):
         get_vacancies_by_salary(vacancies, "abc")
     assert "Некорректный формат диапазона зарплат" in str(excinfo.value)
 
+
 def test_sort_vacancies(vacancies):
     sorted_vacancies = sort_vacancies(vacancies)
     assert sorted_vacancies == [
-        Vacancy("Junior Developer", "https://example.com/vacancy1",50000),
+        Vacancy("Junior Developer", "https://example.com/vacancy1", 50000),
         Vacancy("Middle Developer", "https://example.com/vacancy2", 75000),
         Vacancy("DevOps Engineer", "https://example.com/vacancy5", 90000),
         Vacancy("Senior Developer", "https://example.com/vacancy3", 100000),
         Vacancy("Data Scientist", "https://example.com/vacancy4", 120000),
     ]
 
+
 def test_get_top_vacancies(vacancies):
     top_vacancies = get_top_vacancies(vacancies, 3)
     assert len(top_vacancies) == 3
     assert top_vacancies == [
-        Vacancy("Junior Developer", "https://example.com/vacancy1",50000),
+        Vacancy("Junior Developer", "https://example.com/vacancy1", 50000),
         Vacancy("Senior Developer", "https://example.com/vacancy3", 100000),
         Vacancy("Middle Developer", "https://example.com/vacancy2", 75000),
     ]

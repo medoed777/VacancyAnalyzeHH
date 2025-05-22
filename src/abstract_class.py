@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 
 class AbstractAPI(ABC):
     """Абстрактный класс для подключения к API"""
+
     @abstractmethod
     def _connect(self) -> None:
         """Подключение к API."""
@@ -14,9 +15,9 @@ class AbstractAPI(ABC):
         pass
 
 
-
 class AbstractJSON(ABC):
     """Абстрактный класс для работы с json"""
+
     def __init__(self, filename="C:/Users/ADM/PycharmProjects/cousrework_2/data/vacancies.json"):
         self.__filename = filename
 
