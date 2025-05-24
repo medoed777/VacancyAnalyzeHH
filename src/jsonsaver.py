@@ -1,4 +1,5 @@
 import json
+import os
 
 from src.abstract_class import AbstractJSON
 from src.vacancy import Vacancy
@@ -7,8 +8,14 @@ from src.vacancy import Vacancy
 class JSONSaver(AbstractJSON):
     """Класс для работы с json"""
 
-    def __init__(self, filename="C:/Users/ADM/PycharmProjects/cousrework_2/data/vacancies.json"):
-        super().__init__(filename)
+    def __init__(self, filename=None):
+
+        if filename is None:
+            self.__filename = os.path.abspath("data/vacancies.json")
+        else:
+            self.__filename = os.path.abspath(filename)
+
+        super().__init__(self.__filename)
         self.vacancies = []
         self._load_vacancies()
 

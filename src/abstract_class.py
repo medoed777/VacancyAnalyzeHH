@@ -1,3 +1,4 @@
+import os
 from abc import ABC, abstractmethod
 
 
@@ -18,8 +19,10 @@ class AbstractAPI(ABC):
 class AbstractJSON(ABC):
     """Абстрактный класс для работы с json"""
 
-    def __init__(self, filename="C:/Users/ADM/PycharmProjects/cousrework_2/data/vacancies.json"):
-        self.__filename = filename
+    def __init__(self, filename=None):
+        if filename is None:
+            filename = "data/vacancies.json"
+        self.__filename = os.path.abspath(filename)
 
     @abstractmethod
     def add_vacancy(self, vacancy):

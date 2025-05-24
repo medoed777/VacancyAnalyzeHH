@@ -13,19 +13,32 @@ def get_vacancies_by_salary(filtered_vacancies, salary_range):
         print("Диапазон зарплат не введен. Возвращаем все вакансии.")
         return filtered_vacancies
 
-    if "-" not in salary_range:
+    # Убираем пробелы и разбиваем строку по тире
+    salary_range = salary_range.replace(" ", "")  # Удаляем все пробелы
+    salary_parts = salary_range.split("-")
+
+    # Проверка на количество частей
+    if len(salary_parts) > 2:
         raise ValueError("Некорректный формат диапазона зарплат. Убедитесь, что он задан в формате 'min-max'.")
 
+    # Преобразование строк в числа
     try:
-        min_salary, max_salary = map(float, salary_range.split("-"))
+        min_salary = float(salary_parts[0]) if salary_parts[0] else None
+        max_salary = float(salary_parts[1]) if len(salary_parts) == 2 and salary_parts[1] else None
     except ValueError:
         raise ValueError("Не удалось преобразовать значения в диапазоне зарплат. Убедитесь, что они числовые.")
 
-    return [
+    # Фильтрация вакансий по зарплате
+    filtered = [
         vacancy
         for vacancy in filtered_vacancies
-        if vacancy.salary is not None and min_salary <= vacancy.salary <= max_salary
+        if vacancy.salary is not None
+        and isinstance(vacancy.salary, (int, float))
+        and (min_salary is None or float(vacancy.salary) >= min_salary)
+        and (max_salary is None or float(vacancy.salary) <= max_salary)
     ]
+
+    return filtered
 
 
 def sort_vacancies(vacancies):
@@ -56,3 +69,9 @@ def print_vacancies(vacancies_list):
     """Функция для вывода вакансий"""
     for i, vacancy in enumerate(vacancies_list, start=1):
         print(f"{i}. {vacancy}")
+
+
+def parse_salary_input(salary_input):
+    """Парсинг входных данных о зарплате"""
+    salary_input = salary_input.replace(" ", "-")  # Заменяем пробелы на дефисы для обработки
+    return salary_input

@@ -1,7 +1,7 @@
 from src.hh_api import HeadHunterAPI
 from src.vacancy import Vacancy
 from src.jsonsaver import JSONSaver
-from src.utils import filter_vacancies, get_vacancies_by_salary, sort_vacancies, get_top_vacancies, print_vacancies
+from src.utils import filter_vacancies, get_vacancies_by_salary, sort_vacancies, get_top_vacancies, print_vacancies, parse_salary_input
 
 
 # Создание экземпляра класса для работы с API сайтов с вакансиями
@@ -25,18 +25,44 @@ json_saver.delete_vacancy(vacancy)
 def user_interaction():
     platforms = ["HeadHunter"]
     search_query = input("Введите поисковый запрос: ")
-    top_n = int(input("Введите количество вакансий для вывода в топ N: "))
-    filter_words = input("Введите ключевые слова для фильтрации вакансий: ").split()
-    salary_range = input("Введите диапазон зарплат: ") # Пример: 100000 - 150000
 
+    # Обработка ввода количества вакансий с установкой значения по умолчанию
+    while True:
+        try:
+            top_n_input = input("Введите количество вакансий для вывода в топ N (по умолчанию 10): ")
+            if not top_n_input:  # Проверка на пустой ввод
+                top_n = 10  # Установка значения по умолчанию
+                break
+
+            top_n = int(top_n_input)  # Преобразование в целое число
+
+            if top_n <= 0:  # Проверка на положительное значение
+                print("Пожалуйста, введите положительное целое число.")
+                continue
+
+            break  # Выход из цикла при корректном вводе
+
+        except ValueError:
+            print("Некорректный ввод. Пожалуйста, введите целое число.")
+
+    filter_words = input("Введите ключевые слова для фильтрации вакансий: ").split()
+    salary_range = input("Введите диапазон зарплат (например, '100000 - 150000', оставьте пустым для всех): ")
+
+    # Парсинг диапазона зарплат
+    salary_tuple = parse_salary_input(salary_range)
+
+    # Предполагается, что vacancies_list уже определен и содержит список вакансий
     filtered_vacancies = filter_vacancies(vacancies_list, filter_words)
 
-    ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)
+    # Если диапазон зарплат не задан, используем все вакансии
+    if salary_tuple is not None:
+        ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_tuple)
+    else:
+        ranged_vacancies = filtered_vacancies
 
     sorted_vacancies = sort_vacancies(ranged_vacancies)
     top_vacancies = get_top_vacancies(sorted_vacancies, top_n)
+
     print_vacancies(top_vacancies)
-
-
 if __name__ == "__main__":
     user_interaction()

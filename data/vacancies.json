@@ -1716,5 +1716,12 @@
         "id": 2,
         "title": "Data Scientist",
         "company": "Google"
+    },
+    {
+        "id": 1,
+        "name": "Python Developer",
+        "link": "<https://hh.ru/vacancy/123456>",
+        "salary": 125000.0,
+        "responsibility": "Требования: опыт работы от 3 лет..."
     }
 ]
