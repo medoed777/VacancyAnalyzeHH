@@ -73,5 +73,5 @@ def print_vacancies(vacancies_list):
 
 def parse_salary_input(salary_input):
     """Парсинг входных данных о зарплате"""
-    salary_input = salary_input.replace(" ", "-")  # Заменяем пробелы на дефисы для обработки
+    salary_input = salary_input.replace(" ", "-")
     return salary_input

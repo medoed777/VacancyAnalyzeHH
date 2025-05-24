@@ -30,17 +30,17 @@ def user_interaction():
     while True:
         try:
             top_n_input = input("Введите количество вакансий для вывода в топ N (по умолчанию 10): ")
-            if not top_n_input:  # Проверка на пустой ввод
-                top_n = 10  # Установка значения по умолчанию
+            if not top_n_input:
+                top_n = 10
                 break
 
-            top_n = int(top_n_input)  # Преобразование в целое число
+            top_n = int(top_n_input)
 
-            if top_n <= 0:  # Проверка на положительное значение
+            if top_n <= 0:
                 print("Пожалуйста, введите положительное целое число.")
                 continue
 
-            break  # Выход из цикла при корректном вводе
+            break
 
         except ValueError:
             print("Некорректный ввод. Пожалуйста, введите целое число.")
@@ -48,13 +48,10 @@ def user_interaction():
     filter_words = input("Введите ключевые слова для фильтрации вакансий: ").split()
     salary_range = input("Введите диапазон зарплат (например, '100000 - 150000', оставьте пустым для всех): ")
 
-    # Парсинг диапазона зарплат
     salary_tuple = parse_salary_input(salary_range)
 
-    # Предполагается, что vacancies_list уже определен и содержит список вакансий
     filtered_vacancies = filter_vacancies(vacancies_list, filter_words)
 
-    # Если диапазон зарплат не задан, используем все вакансии
     if salary_tuple is not None:
         ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_tuple)
     else:
